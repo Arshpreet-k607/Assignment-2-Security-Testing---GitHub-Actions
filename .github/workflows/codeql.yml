@@ -32,9 +32,7 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-
+      # No build step needed for Python/JavaScript in this repo
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
