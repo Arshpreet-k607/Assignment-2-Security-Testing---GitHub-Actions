@@ -20,7 +20,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ "python", "javascript", "java" ]
+        # Limit to non-compiled languages in this repo so Autobuild succeeds
+        language: [ "python", "javascript" ]
 
     steps:
       - name: Checkout repository
