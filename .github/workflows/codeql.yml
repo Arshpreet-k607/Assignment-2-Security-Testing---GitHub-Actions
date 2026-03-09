@@ -2,9 +2,11 @@ name: CodeQL
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
   schedule:
     - cron: "0 3 * * 1"
 
@@ -20,8 +22,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Limit to non-compiled languages in this repo so Autobuild succeeds
-        language: [ "python", "javascript" ]
+        # Limit to non-compiled languages in this repo
+        language:
+          - python
+          - javascript
 
     steps:
       - name: Checkout repository
@@ -32,7 +36,6 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      # No build step needed for Python/JavaScript in this repo
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
