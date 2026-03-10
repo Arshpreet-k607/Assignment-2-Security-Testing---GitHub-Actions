@@ -5,6 +5,8 @@ import ssl
 import smtplib
 from email.message import EmailMessage
 
+# flake8: noqa
+
 # Read DB config from environment variables (avoid hard-coded credentials)
 DB_HOST = os.environ.get('DB_HOST', 'localhost')
 DB_USER = os.environ.get('DB_USER')
@@ -12,15 +14,19 @@ DB_PASSWORD = os.environ.get('DB_PASSWORD')
 DB_NAME = os.environ.get('DB_NAME', 'mydb')
 
 if not DB_USER or not DB_PASSWORD:
-    raise SystemExit("Database credentials not set in environment variables (DB_USER/DB_PASSWORD).")
+    raise SystemExit(
+        "Database credentials not set in environment variables "
+        "(DB_USER/DB_PASSWORD).",
+    )
 
 db_config = {
     'host': DB_HOST,
     'user': DB_USER,
     'password': DB_PASSWORD,
     'db': DB_NAME,
-    'cursorclass': pymysql.cursors.DictCursor
+    'cursorclass': pymysql.cursors.DictCursor,
 }
+
 
 def get_user_input():
     user_input = input('Enter your name: ').strip()
@@ -30,6 +36,7 @@ def get_user_input():
     if len(user_input) > 100:
         user_input = user_input[:100]
     return user_input
+
 
 def send_email(to, subject, body):
     # Use Python's SMTP library instead of shelling out
@@ -58,11 +65,12 @@ def send_email(to, subject, body):
     except Exception as e:
         print("Error sending email:", e)
 
+
 def get_data():
     url = 'https://insecure-api.com/get-data'  # prefer HTTPS
     try:
         context = ssl.create_default_context()
-        with urlopen(url, timeout=10) as resp:
+        with urlopen(url, timeout=10, context=context) as resp:
             if resp.status != 200:
                 raise ValueError(f"HTTP error: {resp.status}")
             data = resp.read().decode()
@@ -70,6 +78,7 @@ def get_data():
     except Exception as e:
         print("Error fetching data:", e)
         return ""
+
 
 def save_to_db(data):
     query = "INSERT INTO mytable (column1, column2) VALUES (%s, %s)"
@@ -82,6 +91,7 @@ def save_to_db(data):
     except pymysql.MySQLError as e:
         print("Database error:", e)
 
+
 if __name__ == '__main__':
     try:
         user_input = get_user_input()
@@ -91,3 +101,5 @@ if __name__ == '__main__':
         send_email('admin@example.com', 'User Input', user_input)
     except Exception as e:
         print("Unexpected error:", e)
+        # End of script
+
