@@ -29,6 +29,6 @@ jobs:
         uses: super-linter/super-linter@v8.5.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Run only Python flake8 via Super-Linter; other Python
+          # security checks are handled by the separate Bandit workflow.
           VALIDATE_PYTHON_FLAKE8: true
-          VALIDATE_PYTHON_PYLINT: false
-          VALIDATE_PYTHON_BANDIT: false
